@@ -1,0 +1,23 @@
+# VSCode settings
+.vscode/
+
+# Build artifacts
+build/
+bin/
+obj/
+
+# Compiled object files
+*.o
+*.obj
+
+# Executables
+a.out
+*.exe
+
+# Libraries
+*.so
+*.dll
+*.dylib
+
+# Cache
+*.cache
