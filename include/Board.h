@@ -1,17 +1,14 @@
 #pragma once
 #include "Piece.h"
+using namespace std;
+
 class Board
 {
 private:
-    Piece* board[8][8];
-    void removePiece(int x, int y);
-    bool isInsideBoard(int x, int y) const;
-    bool isKingInCheckAfterMove() const;
+    Piece* grid[8][8];
 public:
-    Board();
-    ~Board();
-
-    Piece* getPiece(int x, int y) const;
-    bool placePiece(Piece* piece, int x, int y);
-    bool movePiece(int fromX, int fromY, int toX, int toY);
+    Piece* getPieceAt(const Position& pos) const;
+    bool setPieceAt(const Position& pos, Piece* p);
+    void movePiece(const Position& from, const Position& to);
+    void initialize();
 };

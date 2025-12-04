@@ -1,19 +1,14 @@
 #include <SFML/Graphics.hpp>
-
+#include "BoardRenderer.h"
 int main()
 {
     // create a window
-    sf::RenderWindow window(sf::VideoMode(640,480), "First window!");
+    sf::RenderWindow window(sf::VideoMode(800,800), "Chess");
 
-    // create a shape
-    sf::CircleShape player(20.f); //radius 50
-    player.setFillColor(sf::Color::Green);
-    player.setPosition(375.f, 275.f); // ish center
-
-    // gameloop
+    // run program as long as window is open
     while (window.isOpen())
     {
-        // event handling
+        // check all window's events that were triggered since last iteration of the loop
         sf::Event event;
         while(window.pollEvent(event))
         {
@@ -21,21 +16,11 @@ int main()
                 window.close();
         }
 
-        // input (arrow keys)
-        float speed = 2.f;
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            player.move(-speed, 0.f);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            player.move(speed, 0.f);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            player.move(0.f, -speed);
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-            player.move(0.f, speed);
-        
-
         // rendering
         window.clear(sf::Color::Black);
-        window.draw(player);
+
+        
+        
         window.display();
     }
 

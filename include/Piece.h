@@ -1,27 +1,26 @@
 #pragma once
+#include "Position.h"
+#include <string>
+#include <vector>
 using namespace std;
-
 
 class Piece
 {
+private:
+    enum class pieceType { King, Queen, Rook, Bishop, Knight, Pawn };
+    enum class Color { White, Black };
+    Position pos;
 public:
-    enum PieceType { Pawn, Rook, Knight, Bishop, Queen, King };
-    enum Color { White, Black };
+    Piece();
+    virtual ~Piece();
 
-    Piece(Color color, PieceType type, int x, int y);
-    virtual ~Piece() = default;
-
-    virtual bool canMove(const Board& board, int fromX, int fromY, int toX, int toY) const = 0;
-    void moveTo(int newX, int newY);
-
-    int getX() const;
-    int getY() const;
+    pieceType getPieceType() const;
     Color getColor() const;
-    PieceType getType() const;
+    Position getPos() const;
+    void setPosition(const Position& newPos);
 
-protected:
-    Color color;
-    PieceType type;
-    int x;
-    int y;
+    virtual vector<Position> getPossibleMoves(const Board& board) const = 0;
+    virtual Piece* clone() const = 0;
+    virtual void move() = 0; // Varje subklass sköter sin egna move
+    
 };
