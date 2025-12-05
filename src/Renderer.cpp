@@ -1,6 +1,6 @@
-#include "BoardRenderer.h"
+#include "Renderer.h"
 
-void BoardRenderer::draw(sf::RenderWindow &window, const Board &board)
+void Renderer::draw(sf::RenderWindow &window, const Board &board)
 {
     for (int y = 0; y < 8; y++)
     {
