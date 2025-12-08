@@ -1,0 +1,3 @@
+Min plan är att göra ett schackspel med ett SFML gränssnitt. Tanken är att man lokalt skall kunna spela ett parti schack lokalt på en dator från start till slut med alla specialregler fullt fungerande. Partiet skall sparas till en daterad fil med FEN notering så att man i vilken schackapp som helst kan spela tillbaks partiet. 
+
+Tanken är i framtiden att expandera projektet när jag har utvecklats mer som programmerare. Jag hade velat testa mig på att implementera online multiplayer. Men det är lite utanför denna kursens scope. Att även kunna implementera någon form av schackdatabas-hjälp för att kunna lista ut användares bästa möjliga drag hade varit coolt, men får se vart nivån ligger. 

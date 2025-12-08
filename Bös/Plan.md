@@ -48,3 +48,58 @@ InputHandler (SFML)
 Tar emot input och översätter den till schackdrag
 Hanterar val av pjäs
 Kommunicerar draget till Game
+
+
+
+Steg 0:
+    Användare klickar på ruta
+    Renderer/UI skickar:
+        en vald position (ex (6,4) -> vit bonde på e2)
+        till game/board
+
+Steg 1:
+    Om p == nullptr -> inget händer
+    Om det inte är rätt färgs tur -> blockera (Game)
+
+Steg 2:
+    Game frågar pjäsen om dess pseudo-legal moves
+        Detta returnerar bara rörelser enligt pjäsens logik
+            Bishop -> diagonaler
+            Rook -> raka linker
+            osv
+        Det returnerar INTE
+            Schackkontroll
+            Pin
+            en passant
+            osv
+
+Steg 3:
+    Game filtrerar bort illegala drag
+    Game simulerar draget på ett kopierat Board
+    (eller genom att göra draget, köra checks, ångra om det behövs)
+    Game testar:
+        Står min kung i schack efter draget (Pin check)
+        Är detta ett specialdrag?
+        Är rockad giltigt?
+        Är en passant giltigt?
+        Är promotion nödvändigt?
+
+Steg 4:
+    Game berättar de drag UI behöver visa
+    Renderer färgar rutor, highlightar osv
+    UI pratar aldrig med pjäsen direkt, utan bara med Game
+
+Steg 5:
+    Använder väljer ett giltigt drag
+    UI klick -> Game får:
+        Start position
+        Slut position
+    Game kontrollerar att start->slut finns i legal moves
+
+Steg 6:
+    Game exekverar draget på Board
+    Game loggar draget i historiken
+    Game byter tur
+
+Steg 7:
+    Renderer använder Board för att rita om brädet
