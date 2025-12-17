@@ -12,16 +12,16 @@ Required on all platforms:
 - CMake version 3.20 or later
 - SFML version 2.5 or later (tested with 2.5.1)
 
-## Windows
+# Windows
 
-# Requirements
+## Requirements
 
 - Windows 10 or newer
 - Visual Studio 2019 or later (with the “Desktop development with C++” workload installed)
 - CMake available in PATH
 - SFML installed (via vcpkg or official SFML binaries)
 
-# Build steps
+## Build steps
 
 Clone the repository
 ```
@@ -50,9 +50,9 @@ build\Debug\chess.exe
 
 Make sure the required SFML DLL files are available at runtime (either in PATH or next to the executable).
 
-## Linux (Debian / Ubuntu)
+# Linux (Debian / Ubuntu)
 
-# Requirements
+## Requirements
 
 - A C++20 compatible compiler
 - CMake version 3.20 or later
