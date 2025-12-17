@@ -60,7 +60,7 @@ Make sure the required SFML DLL files are available at runtime (either in PATH o
 
 On Debian-based systems, SFML can be installed via the package manager.
 
-# Build steps
+## Build steps
 
 Install dependencies
 ```
