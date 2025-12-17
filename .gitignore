@@ -1,0 +1,12 @@
+# Build artifacts
+build/
+
+# Compiled objects
+*.o
+*.exe
+
+# Editor junk
+.vscode/
+
+# Random doc files
+docs/
