@@ -13,6 +13,7 @@ target_sources(chess PRIVATE
     src/Board.cpp
     src/Piece.cpp
     src/Renderer.cpp
+    src/InputHandler.cpp
 )
 
 target_include_directories(chess PRIVATE

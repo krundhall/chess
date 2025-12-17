@@ -1,5 +1,6 @@
 #pragma once
 #include "pieces/Piece.h"
+#include "Position.h"
 
 class Board
 {
@@ -9,8 +10,8 @@ public:
 	Board();
 	~Board();
 
-	Piece* getPieceAt(int row, int col) const;
-	void setPieceAt(int row, int col, Piece* piece);
+	Piece* getPieceAt(const Position &position) const;
+	void setPieceAt(const Position &position, Piece* piece);
 
-	void addPiece(int row, int col, Color color);
+	void addPiece(const Position &position, Color color);
 };

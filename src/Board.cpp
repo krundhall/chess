@@ -1,5 +1,5 @@
 #include "Board.h"
-
+#include <iostream>
 Board::Board()
 {
 }
@@ -14,17 +14,23 @@ Board::~Board()
 		}
 }
 
-Piece* Board::getPieceAt(int row, int col) const
+Piece* Board::getPieceAt(const Position &position) const
 {
-	return this->grid[row][col];
+	return this->grid[position.row][position.col];
 }
 
-void Board::setPieceAt(int row, int col, Piece* piece)
+void Board::setPieceAt(const Position &position, Piece* piece)
 {
-	grid[row][col] = piece;
+	grid[position.row][position.col] = piece;
 }
 
-void Board::addPiece(int row, int col, Color color)
+void Board::addPiece(const Position &position, Color color)
 {
-	grid[row][col] = new Piece(color);
+    if (getPieceAt(position) != nullptr)
+    {
+        std::cerr << "ERROR: addPiece could not add the piece. Piece already exists on that square" << std::endl;
+        return;
+    }
+
+	grid[position.row][position.col] = new Piece(color);
 }

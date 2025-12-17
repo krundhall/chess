@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "pieces/Piece.h"
 #include "Board.h"
+
 #include <iostream>
 
 int main()
@@ -9,9 +10,8 @@ int main()
 	Renderer renderer(800, 800, "SFML WINDOW");
 	Board board;
 
-	board.addPiece(0, 0, Color::White);
-	board.addPiece(7, 7, Color::Black);
-	board.addPiece(5, 5, Color::White);
+    board.addPiece(Position{0, 0}, Color::White);
+    board.addPiece(Position{7,7}, Color::Black);
 
 	while (renderer.isOpen())
 	{
