@@ -43,7 +43,6 @@ Build the project
 cmake --build build
 ```
 
-Run the executable
 The executable will be located in the build directory, typically under
 build\Debug\chess.exe
 (or Release, depending on configuration)
