@@ -11,7 +11,7 @@ bool Renderer::isOpen() const
 	return window.isOpen();
 }
 
-void Renderer::pollEvents()
+void Renderer::pollEvents(InputHandler &input)
 {
 	sf::Event event;
 	while (window.pollEvent(event))
@@ -19,10 +19,7 @@ void Renderer::pollEvents()
 		if (event.type == sf::Event::Closed)
 			window.close();
 
-
-
-
-
+        input.handleEvent(event);
 	}
 }
 
@@ -80,4 +77,9 @@ void Renderer::drawPieces(const Board& board)
 sf::RenderWindow& Renderer::getWindow()
 {
 	return window;
+}
+
+int Renderer::getTileSize() const
+{
+    return this->tileSize;
 }
