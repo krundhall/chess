@@ -1,10 +1,7 @@
 #pragma once
-
-enum class Color
-{
-	White,
-	Black
-};
+#include "Color.h"
+#include "Position.h"
+#include "Board.h"
 
 class Piece
 {
@@ -17,4 +14,8 @@ public:
 
 	Color getColor() const;
 
+    virtual std::vector<Position> getPossibleMoves(
+        const Board &board,
+        const Position &from
+    ) const = 0;
 };

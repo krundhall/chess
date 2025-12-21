@@ -12,6 +12,4 @@ public:
 
 	Piece* getPieceAt(const Position &position) const;
 	void setPieceAt(const Position &position, Piece* piece);
-
-	void addPiece(const Position &position, Color color);
 };

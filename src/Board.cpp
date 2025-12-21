@@ -23,14 +23,3 @@ void Board::setPieceAt(const Position &position, Piece* piece)
 {
 	grid[position.row][position.col] = piece;
 }
-
-void Board::addPiece(const Position &position, Color color)
-{
-    if (getPieceAt(position) != nullptr)
-    {
-        std::cerr << "ERROR: addPiece could not add the piece. Piece already exists on that square" << std::endl;
-        return;
-    }
-
-	grid[position.row][position.col] = new Piece(color);
-}
