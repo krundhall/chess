@@ -67,8 +67,11 @@ void Game::handleInput()
 void Game::movePiece(const Position &from, const Position &to)
 {
     Piece* piece = board.getPieceAt(from);
-
     if (!piece)
+        return;
+
+    Piece* target = board.getPieceAt(to);
+    if (target && target->getColor() == piece->getColor())
         return;
 
     board.setPieceAt(to, piece);

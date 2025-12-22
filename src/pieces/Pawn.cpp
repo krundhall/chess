@@ -7,6 +7,11 @@ Pawn::Pawn(Color color)
     this->hasMoved = false;
 }
 
+PieceType Pawn::getType() const
+{
+    return PieceType::Pawn;
+}
+
 std::vector<Position> Pawn::getPossibleMoves(const Board &board, const Position &from) const
 {
     std::vector<Position> possibleMoves;
