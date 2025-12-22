@@ -4,6 +4,8 @@
 
 class Pawn : public Piece
 {
+private:
+    bool hasMoved;
 public:
     explicit Pawn(Color color);
 

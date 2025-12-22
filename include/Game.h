@@ -2,12 +2,15 @@
 #include "Renderer.h"
 #include "Position.h"
 #include "Board.h"
+#include "pieces/Pawn.h"
+#include "InputHandler.h"
 
 class Game
 {
 private:
     Board board;
     Renderer renderer;
+    InputHandler input;
 
     Color currentTurn = Color::White;
     Piece* selectedPiece = nullptr;
@@ -17,6 +20,6 @@ public:
     void run();
 
 private:
-    void setup();
+    void setupBoard();
     void handleInput();
 };

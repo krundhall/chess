@@ -7,7 +7,7 @@ class Renderer
 {
 private:
 	sf::RenderWindow window;
-	int tileSize = 100;
+	int tileSize;
 
 public:
 	Renderer(unsigned int width, unsigned int height, const char* title);

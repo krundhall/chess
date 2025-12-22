@@ -1,6 +1,8 @@
 #include "Board.h"
+#include "pieces/Piece.h"
 #include <iostream>
 Board::Board()
+    : grid{}
 {
 }
 

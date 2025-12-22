@@ -1,8 +1,9 @@
 #pragma once
 #include "Color.h"
 #include "Position.h"
-#include "Board.h"
 #include <vector>
+
+class Board;
 
 class Piece
 {

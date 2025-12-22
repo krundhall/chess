@@ -1,7 +1,9 @@
 #include "Renderer.h"
+#include "Board.h"
+#include "pieces/Piece.h"
 
 Renderer::Renderer(unsigned int width, unsigned int height, const char* title)
-	: window(sf::VideoMode(width, height), title)
+	: window(sf::VideoMode(width, height), title), tileSize(100)
 {
 	window.setFramerateLimit(100);
 }

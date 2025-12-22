@@ -1,6 +1,6 @@
 #pragma once
-#include "pieces/Piece.h"
 #include "Position.h"
+class Piece;
 
 class Board
 {
