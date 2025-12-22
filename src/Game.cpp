@@ -1,5 +1,6 @@
 #include "Game.h"
-#include <iostream> //tabort
+#include <iostream>
+
 Game::Game()
     : renderer(800, 800, "Chess"), input(renderer.getWindow(), renderer.getTileSize())
 {
@@ -12,13 +13,7 @@ void Game::run()
     {
         renderer.pollEvents(input);
 
-        if (input.hasClicked())
-    {
-        Position pos = input.getClickedPosition();
-        std::cout << pos.row << ", " << pos.col << "\n";
-
-        input.clearClick();
-    }
+        handleInput();
 
         renderer.clear();
 
@@ -38,4 +33,36 @@ void Game::setupBoard()
 
 void Game::handleInput()
 {
+    if (!input.hasClicked())
+        return;
+
+    Position clicked = input.getClickedPosition();
+
+    if (!selectedPosition)
+    {
+        if (board.getPieceAt(clicked) != nullptr)
+        {
+            selectedPosition = clicked;
+            std::cout << " -- 46 -- " << std::endl; //debug print
+        }
+    }
+    else
+    {
+        movePiece(*selectedPosition, clicked);
+        selectedPosition.reset();
+        std::cout << " -- 53 -- " << std::endl; //debug print
+    }
+
+    input.clearClick();
+}
+
+void Game::movePiece(const Position &from, const Position &to)
+{
+    Piece* piece = board.getPieceAt(from);
+
+    if (!piece)
+        return;
+
+    board.setPieceAt(to, piece);
+    board.setPieceAt(from, nullptr);
 }

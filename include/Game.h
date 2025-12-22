@@ -4,7 +4,7 @@
 #include "Board.h"
 #include "pieces/Pawn.h"
 #include "InputHandler.h"
-
+#include <optional>
 class Game
 {
 private:
@@ -13,8 +13,7 @@ private:
     InputHandler input;
 
     Color currentTurn = Color::White;
-    Piece* selectedPiece = nullptr;
-    Position selectedPosition = {-1, -1};
+    std::optional<Position> selectedPosition;
 public:
     Game();
     void run();
@@ -22,4 +21,5 @@ public:
 private:
     void setupBoard();
     void handleInput();
+    void movePiece(const Position &from, const Position &to);
 };
