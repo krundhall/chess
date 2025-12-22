@@ -16,6 +16,7 @@ target_sources(chess PRIVATE
     src/InputHandler.cpp
     src/Game.cpp
     src/pieces/Pawn.cpp
+    src/pieces/Piece.cpp
 )
 
 target_include_directories(chess PRIVATE

@@ -2,10 +2,11 @@
 #include "Color.h"
 #include "Position.h"
 #include "Board.h"
+#include <vector>
 
 class Piece
 {
-private:
+protected:
 	Color color;
 
 public:
@@ -14,8 +15,5 @@ public:
 
 	Color getColor() const;
 
-    virtual std::vector<Position> getPossibleMoves(
-        const Board &board,
-        const Position &from
-    ) const = 0;
+    virtual std::vector<Position> getPossibleMoves(const Board &board, const Position &from) const = 0;
 };

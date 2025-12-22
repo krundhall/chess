@@ -7,7 +7,7 @@ class Pawn : public Piece
 public:
     explicit Pawn(Color color);
 
-    virtual std::vector<Position> getPossibleMoves(
+    std::vector<Position> getPossibleMoves(
         const Board &board,
         const Position &from
     ) const override;
