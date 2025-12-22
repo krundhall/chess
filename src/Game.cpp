@@ -48,9 +48,17 @@ void Game::handleInput()
     }
     else
     {
-        movePiece(*selectedPosition, clicked);
-        selectedPosition.reset();
-        std::cout << " -- 53 -- " << std::endl; //debug print
+        if (clicked == *selectedPosition)
+        {
+            std::cout << "Tried to move to the same square" << std::endl;
+            selectedPosition.reset();
+        }
+        else
+        {
+            movePiece(*selectedPosition, clicked);
+            selectedPosition.reset();
+            std::cout << " -- 53 -- " << std::endl; //debug print
+        }
     }
 
     input.clearClick();
