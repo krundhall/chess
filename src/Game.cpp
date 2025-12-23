@@ -77,3 +77,42 @@ void Game::movePiece(const Position &from, const Position &to)
     board.setPieceAt(to, piece);
     board.setPieceAt(from, nullptr);
 }
+
+bool Game::isValidMove(const Position &from, const Position &to) const
+{
+    Piece* piece = board.getPieceAt(from);
+    Piece* target = board.getPieceAt(to);
+
+    // out of bounds check
+    if (from.row < 0 || from.row > 7 ||
+        from.col < 0 || from.col > 7 ||
+        to.row   < 0 || to.row   > 7 ||
+        to.col   < 0 || to.col   > 7)
+        {
+            return false;
+        }
+
+    // from != to
+    if (from == to)
+        return false;
+
+    // from piece exists
+    if (board.getPieceAt(from) == nullptr)
+        return false;
+
+    // same color capture
+    if (target && target->getColor() == piece->getColor())
+        return false;
+
+    // whos turn is it
+    if (board.getPieceAt(from)->getColor() != currentTurn)
+        return false;
+
+    // piece canmove
+
+    // special drag
+
+    // king in check?
+
+    return true;
+}

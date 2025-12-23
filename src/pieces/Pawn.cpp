@@ -44,3 +44,17 @@ std::vector<Position> Pawn::getPossibleMoves(const Board &board, const Position 
 
     return possibleMoves;
 }
+
+bool Pawn::canMove(const Position &from, const Position &to, const Board &board) const
+{
+    if (this->color == Color::White)
+    {
+
+    }
+    else //this->color == Color::Black
+    {
+
+    }
+
+    return true;
+}

@@ -22,4 +22,5 @@ private:
     void setupBoard();
     void handleInput();
     void movePiece(const Position &from, const Position &to);
+    bool isValidMove(const Position &from, const Position &to) const;
 };
