@@ -49,7 +49,27 @@ bool Pawn::canMove(const Position &from, const Position &to, const Board &board)
 {
     if (this->color == Color::White)
     {
+        // One step
+        if (to.col == from.col &&
+            to.row == from.row - 1 &&
+            board.getPieceAt(to) == nullptr)
+            return true;
 
+        // Two step
+        if (!hasMoved &&
+            to.col == from.col &&
+            to.row == from.row - 2 &&
+            board.getPieceAt(to) == nullptr)
+            return true;
+
+        // Diagonal Capture
+        if (to.row == from.row - 1 &&
+            (to.col == from.col - 1 || to.col == from.col + 1))
+            {
+                Piece* target = board.getPieceAt(to);
+                if (target && target->getColor() != this->color)
+                    return true;
+            }
     }
     else //this->color == Color::Black
     {
