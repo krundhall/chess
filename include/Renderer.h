@@ -2,6 +2,9 @@
 #include <SFML/Graphics.hpp>
 #include "Board.h"
 #include "InputHandler.h"
+#include <map>
+#include <utility>
+#include "pieces/Piece.h"
 
 class Renderer
 {
@@ -9,6 +12,7 @@ private:
 	sf::RenderWindow window;
 	int tileSize;
 
+    std::map<std::pair<PieceType, Color>, sf::Texture> textures;
 public:
 	Renderer(unsigned int width, unsigned int height, const char* title);
 
@@ -21,4 +25,5 @@ public:
 
 	sf::RenderWindow& getWindow();
     int getTileSize() const;
+    void loadTextures();
 };

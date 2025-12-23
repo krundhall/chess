@@ -5,6 +5,16 @@
 
 class Board;
 
+enum class PieceType
+{
+    Pawn,
+    Rook,
+    Knight,
+    Bishop,
+    Queen,
+    King
+};
+
 class Piece
 {
 protected:
@@ -15,6 +25,7 @@ public:
 	virtual ~Piece();
 
 	Color getColor() const;
+    virtual PieceType getType() const = 0;
 
     virtual std::vector<Position> getPossibleMoves(const Board &board, const Position &from) const = 0;
 };

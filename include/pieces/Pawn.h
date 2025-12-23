@@ -9,6 +9,7 @@ private:
 public:
     explicit Pawn(Color color);
 
+    PieceType getType() const override;
     std::vector<Position> getPossibleMoves(
         const Board &board,
         const Position &from

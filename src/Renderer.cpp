@@ -2,10 +2,14 @@
 #include "Board.h"
 #include "pieces/Piece.h"
 
+#include <filesystem>
+#include <iostream> //temp
+
 Renderer::Renderer(unsigned int width, unsigned int height, const char* title)
 	: window(sf::VideoMode(width, height), title), tileSize(100)
 {
 	window.setFramerateLimit(100);
+    loadTextures();
 }
 
 bool Renderer::isOpen() const
@@ -54,25 +58,31 @@ void Renderer::drawBoard()
 
 void Renderer::drawPieces(const Board& board)
 {
-	for (int i = 0; i < 8; i++)
-		for (int j = 0; j < 8; j++)
+    sf::Sprite sprite;
+
+	for (int row = 0; row < 8; row++)
+		for (int col = 0; col < 8; col++)
 		{
-			Piece* piece = board.getPieceAt(Position{i, j});
+			Piece* piece = board.getPieceAt(Position{row, col});
 			if (piece == nullptr)
 				continue;
 
-			sf::CircleShape circle(40);
+            // build the key to call the sprite map
+            auto key = std::make_pair(piece->getType(), piece->getColor());
+            sprite.setTexture(textures[key]);
 
-			if (piece->getColor() == Color::White)
-				circle.setFillColor(sf::Color(245, 245, 245));
-			else
-				circle.setFillColor(sf::Color(30, 30, 30));
+            // scale the texture accordingly to tileSize
+            auto texSize = sprite.getTexture()->getSize();
+            sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
+            float scale = (tileSize * 0.65f) / texSize.x;
+            sprite.setScale(scale, scale);
 
-			float x = j * tileSize + (tileSize / 2.0f - 40);
-			float y = i * tileSize + (tileSize / 2.0f - 40);
+            sprite.setPosition(
+            col * tileSize + tileSize / 2.f,
+            row * tileSize + tileSize / 2.f
+            );
 
-			circle.setPosition(x, y);
-			window.draw(circle);
+            window.draw(sprite);
 		}
 }
 
@@ -84,4 +94,17 @@ sf::RenderWindow& Renderer::getWindow()
 int Renderer::getTileSize() const
 {
     return this->tileSize;
+}
+
+void Renderer::loadTextures()
+{
+    std::cout << "CWD: "
+              << std::filesystem::current_path()
+              << std::endl;
+
+    if (!textures[{PieceType::Pawn, Color::White}].loadFromFile("../assets/white_pawn.png"))
+        std::cout << "Failed to load white pawn\n";
+
+    if (!textures[{PieceType::Pawn, Color::Black}].loadFromFile("../assets/black_pawn.png"))
+        std::cout << "Failed to load black pawn\n";
 }
