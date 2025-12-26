@@ -50,7 +50,7 @@ void Renderer::drawBoard()
 			if ((i + j) % 2 == 0)
 				tile.setFillColor(sf::Color(238, 238, 210));
 			else
-				tile.setFillColor(sf::Color(118, 150, 86));
+				tile.setFillColor(sf::Color(89, 39, 92));
 			tile.setPosition(j * tileSize, i * tileSize);
 			window.draw(tile);
 		}

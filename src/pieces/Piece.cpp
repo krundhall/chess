@@ -13,3 +13,8 @@ Color Piece::getColor() const
 {
 	return this->color;
 }
+
+bool Piece::canMove(const Position &from, const Position &to, const Board &board) const
+{
+    return false;
+}

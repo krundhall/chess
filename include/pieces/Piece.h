@@ -25,7 +25,8 @@ public:
 	virtual ~Piece();
 
 	Color getColor() const;
-    virtual PieceType getType() const = 0;
 
+    virtual PieceType getType() const = 0;
     virtual std::vector<Position> getPossibleMoves(const Board &board, const Position &from) const = 0;
+    virtual bool canMove(const Position &from, const Position &to, const Board &board) const;
 };

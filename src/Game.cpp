@@ -97,7 +97,7 @@ bool Game::isValidMove(const Position &from, const Position &to) const
         return false;
 
     // from piece exists
-    if (board.getPieceAt(from) == nullptr)
+    if (piece == nullptr)
         return false;
 
     // same color capture

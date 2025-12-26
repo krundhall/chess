@@ -14,4 +14,7 @@ public:
         const Board &board,
         const Position &from
     ) const override;
+
+    bool canMove(const Position &from, const Position &to, const Board &board) const override;
+
 };
