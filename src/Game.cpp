@@ -1,5 +1,6 @@
 #include "Game.h"
 #include <iostream>
+#include <algorithm>
 
 Game::Game()
     : renderer(800, 800, "Chess"), input(renderer.getWindow(), renderer.getTileSize())
@@ -108,8 +109,10 @@ bool Game::isValidMove(const Position &from, const Position &to) const
     if (board.getPieceAt(from)->getColor() != currentTurn)
         return false;
 
-    // piece canmove
-
+    // check possible moves for piece
+    auto pieceMoves = piece->getPossibleMoves(board, from);
+    if (std::find(pieceMoves.begin(), pieceMoves.end(), to) == pieceMoves.end())
+        return false;
     // special drag
 
     // king in check?
