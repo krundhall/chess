@@ -11,12 +11,13 @@ add_executable(chess)
 target_sources(chess PRIVATE
     src/main.cpp
     src/Board.cpp
-    src/pieces/Piece.cpp
     src/Renderer.cpp
     src/InputHandler.cpp
     src/Game.cpp
     src/pieces/Pawn.cpp
     src/pieces/Piece.cpp
+    src/pieces/King.cpp
+    src/pieces/Rook.cpp
 )
 
 target_include_directories(chess PRIVATE

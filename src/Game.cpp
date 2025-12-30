@@ -106,21 +106,21 @@ bool Game::isValidMove(const Position &from, const Position &to) const
         return false;
 
     // whos turn is it
-    if (board.getPieceAt(from)->getColor() != currentTurn)
+    if (piece->getColor() != currentTurn)
         return false;
+
+    // castling
+
+    if (piece->getType() == PieceType::King &&
+        std::abs(from.col - to.col) == 2)
+    {
+        return canCastle(from, to);
+    }
 
     // check possible moves for piece
     auto pieceMoves = piece->getPossibleMoves(board, from);
     if (std::find(pieceMoves.begin(), pieceMoves.end(), to) == pieceMoves.end())
         return false;
-
-    // special moves
-
-    if (piece->getType() == PieceType::King &&
-        std::abs(from.col - to.col) == 2)
-    {
-        if (!canCastle(from, to)) return false;
-    }
 
 
     // king in check?
@@ -131,11 +131,56 @@ bool Game::isValidMove(const Position &from, const Position &to) const
 
 bool Game::canCastle(const Position &from, const Position &to) const
 {
-    Piece* King = board.getPieceAt(from);
+    Piece* king = board.getPieceAt(from);
 
-    if (!King || King->getType() != PieceType::King)
+    if (!king || king->getType() != PieceType::King)
         return false;
 
-    if (King)
+    if (king->getHasMoved())
+        return false;
+
+    int colDiff = to.col - from.col; // should be either 2 or -2 depending on king or queenside
+    bool kingSide = colDiff > 0; // more then 0 would be kingside/short/O-O
+    int rookCol = kingSide ? 7 : 0; // ternary to decide what rook
+
+    Piece* rook = board.getPieceAt({from.row, rookCol});
+    if (!rook || rook->getType() != PieceType::Rook || rook->getHasMoved())
+        return false;
+
+
     return true;
+}
+
+bool Game::leavesKingInCheck(const Position &from, const Position &to) const
+{
+
+    Piece* captured = board.getPieceAt(to);
+    Piece* moving = board.getPieceAt(from);
+
+
+    return false;
+}
+
+Position Game::locateKing(Color color) const
+{
+    for (int row = 0; row < 8; row++)
+        for (int col = 0; col < 8; col ++)
+        {
+            Piece* p = board.getPieceAt({row, col});
+            if (p && p->getColor() == color && p->getType() == PieceType::King)
+            {
+                Position kingPos = {row, col};
+                return kingPos;
+            }
+        }
+
+
+    throw std::logic_error("King not found, you silly goose!");
+}
+
+bool Game::isKingInCheck(Color color) const
+{
+    Position king = locateKing(color);
+
+    return false;
 }
