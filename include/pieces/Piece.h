@@ -19,9 +19,11 @@ class Piece
 {
 protected:
 	Color color;
+    PieceType pieceType;
+    bool hasMoved = false;
 
 public:
-	explicit Piece(Color color);
+	explicit Piece(Color color, PieceType pieceType);
 	virtual ~Piece();
 
 	Color getColor() const;
@@ -29,4 +31,6 @@ public:
     virtual PieceType getType() const = 0;
     virtual std::vector<Position> getPossibleMoves(const Board &board, const Position &from) const = 0;
     virtual bool canMove(const Position &from, const Position &to, const Board &board) const;
+    bool getHasMoved() const;
+    void setHasMoved(bool state);
 };

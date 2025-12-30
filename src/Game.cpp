@@ -113,9 +113,29 @@ bool Game::isValidMove(const Position &from, const Position &to) const
     auto pieceMoves = piece->getPossibleMoves(board, from);
     if (std::find(pieceMoves.begin(), pieceMoves.end(), to) == pieceMoves.end())
         return false;
-    // special drag
+
+    // special moves
+
+    if (piece->getType() == PieceType::King &&
+        std::abs(from.col - to.col) == 2)
+    {
+        if (!canCastle(from, to)) return false;
+    }
+
 
     // king in check?
 
+
+    return true;
+}
+
+bool Game::canCastle(const Position &from, const Position &to) const
+{
+    Piece* King = board.getPieceAt(from);
+
+    if (!King || King->getType() != PieceType::King)
+        return false;
+
+    if (King)
     return true;
 }

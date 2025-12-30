@@ -2,9 +2,8 @@
 #include "Board.h"
 
 Pawn::Pawn(Color color)
-    : Piece(color)
+    : Piece(color, PieceType::Pawn)
 {
-    this->hasMoved = false;
 }
 
 PieceType Pawn::getType() const

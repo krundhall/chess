@@ -3,6 +3,7 @@
 #include "Position.h"
 #include "Board.h"
 #include "pieces/Pawn.h"
+#include "pieces/King.h"
 #include "InputHandler.h"
 #include <optional>
 class Game
@@ -23,4 +24,6 @@ private:
     void handleInput();
     void movePiece(const Position &from, const Position &to);
     bool isValidMove(const Position &from, const Position &to) const;
+    bool canCastle(const Position &from, const Position &to) const;
+
 };
