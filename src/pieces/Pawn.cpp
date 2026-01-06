@@ -19,9 +19,8 @@ std::vector<Position> Pawn::getPossibleMoves(const Board &board, const Position 
     {
         Position oneStep{from.row - 1, from.col};
         Position twoStep{from.row - 2, from.col};
-        Position diagonal{from.row, };
 
-        // check if can move two squares
+        // two squares
         if (!hasMoved)
         {
             if (oneStep.row >= 0 &&
@@ -33,14 +32,30 @@ std::vector<Position> Pawn::getPossibleMoves(const Board &board, const Position 
             }
         }
 
-        // check one square ahead
+        // one squares
         if (oneStep.row >= 0 &&
             board.getPieceAt(oneStep) == nullptr)
         {
             possibleMoves.push_back(oneStep);
         }
 
-        // check diagonals
+        // diagonal left
+        Position diagLeft{from.row -1, from.col - 1};
+        if (diagLeft.row >= 0 && diagLeft.col >= 0)
+        {
+            Piece* target = board.getPieceAt(diagLeft);
+            if (target && target->getColor() != color)
+                possibleMoves.push_back(diagLeft);
+        }
+
+        // diagonal right
+        Position diagRight{from.row - 1, from.col + 1};
+        if (diagRight.row >= 0 && diagRight.col < 8)
+        {
+            Piece* target = board.getPieceAt(diagRight);
+            if (target && target->getColor() != color)
+                possibleMoves.push_back(diagRight);
+        }
 
     }
 
