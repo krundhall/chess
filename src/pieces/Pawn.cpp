@@ -19,6 +19,7 @@ std::vector<Position> Pawn::getPossibleMoves(const Board &board, const Position 
     {
         Position oneStep{from.row - 1, from.col};
         Position twoStep{from.row - 2, from.col};
+        Position diagonal{from.row, };
 
         // check if can move two squares
         if (!hasMoved)
@@ -38,6 +39,8 @@ std::vector<Position> Pawn::getPossibleMoves(const Board &board, const Position 
         {
             possibleMoves.push_back(oneStep);
         }
+
+        // check diagonals
 
     }
 

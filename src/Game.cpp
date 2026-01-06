@@ -180,7 +180,24 @@ Position Game::locateKing(Color color) const
 
 bool Game::isKingInCheck(Color color) const
 {
-    Position king = locateKing(color);
+    Position kingPos = locateKing(color);
+
+    for (int row = 0; row < 8; row++)
+        for (int col = 0; col < 8; col++)
+        {
+            Position from{row, col};
+            Piece* piece = board.getPieceAt(from);
+
+            if (!piece)
+                continue;
+
+            if (piece->getColor() == color)
+                continue;
+
+            auto moves = piece->getPossibleMoves(board, from);
+            if (std::find(moves.begin(), moves.end(), kingPos) != moves.end())
+                return true;
+        }
 
     return false;
 }

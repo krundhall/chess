@@ -25,5 +25,8 @@ private:
     void movePiece(const Position &from, const Position &to);
     bool isValidMove(const Position &from, const Position &to) const;
     bool canCastle(const Position &from, const Position &to) const;
+    bool leavesKingInCheck(const Position &from, const Position &to) const;
+    Position locateKing(Color color) const;
+    bool isKingInCheck(Color color) const;
 
 };
