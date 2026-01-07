@@ -44,7 +44,7 @@ void Game::handleInput()
         if (board.getPieceAt(clicked) != nullptr)
         {
             selectedPosition = clicked;
-            std::cout << " -- 46 -- " << std::endl; //debug print
+            std::cout << "Selected position" << std::endl; //debug print
         }
     }
     else
@@ -58,7 +58,7 @@ void Game::handleInput()
         {
             movePiece(*selectedPosition, clicked);
             selectedPosition.reset();
-            std::cout << " -- 53 -- " << std::endl; //debug print
+            std::cout << "Moved position" << std::endl; //debug print
         }
     }
 
@@ -113,6 +113,7 @@ bool Game::isValidMove(const Position &from, const Position &to) const
 
     if (piece->getType() == PieceType::King &&
         std::abs(from.col - to.col) == 2)
+    // if(dynamic_cast<King*>(piece) != nullptr)
     {
         return canCastle(from, to);
     }
