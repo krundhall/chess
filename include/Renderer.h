@@ -12,7 +12,6 @@ private:
 	sf::RenderWindow window;
 	int tileSize;
 
-    std::map<std::pair<PieceType, Color>, sf::Texture> textures;
 public:
 	Renderer(unsigned int width, unsigned int height, const char* title);
 

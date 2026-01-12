@@ -18,6 +18,9 @@ target_sources(chess PRIVATE
     src/pieces/Piece.cpp
     src/pieces/King.cpp
     src/pieces/Rook.cpp
+    src/pieces/Queen.cpp
+    src/pieces/Bishop.cpp
+    src/pieces/Knight.cpp
 )
 
 target_include_directories(chess PRIVATE

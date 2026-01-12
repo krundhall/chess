@@ -1,31 +1,30 @@
-#include "pieces/Rook.h"
+#include "pieces/Bishop.h"
 #include "Board.h"
 
-Rook::Rook(Color color)
+Bishop::Bishop(Color color)
     : Piece(color)
 {
     auto &texture = accessTexture();
     if (this->getColor() == Color::White)
     {
-        if (!texture.loadFromFile("../assets/white_rook.png"))
-            throw std::runtime_error("Failed to load asset: white_rook.png");
+        if (!texture.loadFromFile("../assets/white_bishop.png"))
+            throw std::runtime_error("Failed to load asset: white_bishop.png");
     }
     else
     {
-        if (!texture.loadFromFile("../assets/black_rook.png"))
-            throw std::runtime_error("Failed to load asset: black_rook.png");
+        if (!texture.loadFromFile("../assets/black_bishop.png"))
+            throw std::runtime_error("Failed to load asset: black_bishop.png");
     }
 }
 
-std::vector<Position> Rook::getPossibleMoves(const Board &board, const Position &from) const
+std::vector<Position> Bishop::getPossibleMoves(const Board &board, const Position &from) const
 {
     std::vector<Position> possibleMoves;
 
-    // "Up"
-
-    for (int r = from.row - 1; r >= 0; --r)
+    // "Up-left"
+    for (int r = from.row - 1, c = from.col - 1; r >= 0 && c >= 0; --r, --c)
     {
-        Position to{r, from.col};
+        Position to{r, c};
         Piece* target = board.getPieceAt(to);
 
         if (target == nullptr)
@@ -40,30 +39,10 @@ std::vector<Position> Rook::getPossibleMoves(const Board &board, const Position 
         }
     }
 
-    // "Down"
-
-    for (int r = from.row + 1; r < 8; ++r)
+    // "Up-right"
+    for (int r = from.row - 1, c = from.col + 1; r >= 0 && c < 8; --r, ++c)
     {
-        Position to{r, from.col};
-        Piece* target = board.getPieceAt(to);
-
-        if (target == nullptr)
-        {
-            possibleMoves.push_back(to);
-        }
-        else
-        {
-            if (target->getColor() != this->getColor())
-                possibleMoves.push_back(to); // capture
-            break;
-        }
-    }
-
-    // "Left"
-
-    for (int c = from.col - 1; c >= 0; --c)
-    {
-        Position to{from.row, c};
+        Position to{r, c};
         Piece* target = board.getPieceAt(to);
 
         if (target == nullptr)
@@ -78,11 +57,28 @@ std::vector<Position> Rook::getPossibleMoves(const Board &board, const Position 
         }
     }
 
-    // "Right"
-
-    for (int c = from.col + 1; c < 8; --c)
+    // "Down-left"
+    for (int r = from.row + 1, c = from.col - 1; r < 8 && c >= 0; ++r, --c)
     {
-        Position to{from.col, c};
+        Position to{r, c};
+        Piece* target = board.getPieceAt(to);
+
+        if (target == nullptr)
+        {
+            possibleMoves.push_back(to);
+        }
+        else
+        {
+            if (target->getColor() != this->getColor())
+                possibleMoves.push_back(to);
+            break;
+        }
+    }
+
+    // "Down-right"
+    for (int r = from.row + 1, c = from.col + 1; r < 8 && c < 8; ++r, ++c)
+    {
+        Position to{r, c};
         Piece* target = board.getPieceAt(to);
 
         if (target == nullptr)

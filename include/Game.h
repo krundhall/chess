@@ -4,6 +4,12 @@
 #include "Board.h"
 #include "pieces/Pawn.h"
 #include "pieces/King.h"
+#include "pieces/Queen.h"
+#include "pieces/Rook.h"
+#include "pieces/Bishop.h"
+#include "pieces/Knight.h"
+#include "pieces/Piece.h"
+
 #include "InputHandler.h"
 #include <optional>
 class Game
@@ -25,8 +31,9 @@ private:
     void movePiece(const Position &from, const Position &to);
     bool isValidMove(const Position &from, const Position &to) const;
     bool canCastle(const Position &from, const Position &to) const;
-    bool leavesKingInCheck(const Position &from, const Position &to) const;
+    bool leavesKingInCheck(const Position &from, const Position &to);
     Position locateKing(Color color) const;
     bool isKingInCheck(Color color) const;
+    static const char* colorToStr(Color c);
 
 };

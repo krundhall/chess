@@ -48,9 +48,9 @@ void Renderer::drawBoard()
 		{
 			sf::RectangleShape tile(sf::Vector2f(tileSize, tileSize));
 			if ((i + j) % 2 == 0)
-				tile.setFillColor(sf::Color(238, 238, 210));
+				tile.setFillColor(sf::Color(211, 235, 224));
 			else
-				tile.setFillColor(sf::Color(118, 150, 86));
+				tile.setFillColor(sf::Color(103, 109, 138));
 			tile.setPosition(j * tileSize, i * tileSize);
 			window.draw(tile);
 		}
@@ -67,14 +67,12 @@ void Renderer::drawPieces(const Board& board)
 			if (piece == nullptr)
 				continue;
 
-            // build the key to call the sprite map
-            auto key = std::make_pair(piece->getType(), piece->getColor());
-            sprite.setTexture(textures[key]);
+            sprite.setTexture(piece->getTexture());
 
             // scale the texture accordingly to tileSize
             auto texSize = sprite.getTexture()->getSize();
             sprite.setOrigin(texSize.x / 2.f, texSize.y / 2.f);
-            float scale = (tileSize * 0.65f) / texSize.x;
+            float scale = (tileSize * 1.0f) / texSize.x;
             sprite.setScale(scale, scale);
 
             sprite.setPosition(
@@ -102,9 +100,9 @@ void Renderer::loadTextures()
               << std::filesystem::current_path()
               << std::endl;
 
-    if (!textures[{PieceType::Pawn, Color::White}].loadFromFile("../assets/white_pawn.png"))
-        std::cout << "Failed to load white pawn\n";
+    //if (!textures[{PieceType::Pawn, Color::White}].loadFromFile("../assets/white_pawn.png"))
+    //    std::cout << "Failed to load white pawn\n";
 
-    if (!textures[{PieceType::Pawn, Color::Black}].loadFromFile("../assets/black_pawn.png"))
-        std::cout << "Failed to load black pawn\n";
+    //if (!textures[{PieceType::Pawn, Color::Black}].loadFromFile("../assets/black_pawn.png"))
+    //    std::cout << "Failed to load black pawn\n";
 }

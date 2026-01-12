@@ -29,7 +29,35 @@ void Game::run()
 
 void Game::setupBoard()
 {
-    board.setPieceAt({6,0}, new Pawn(Color::White));
+    for (int i = 0; i < 8; i++)
+    {
+        board.setPieceAt({6,i}, new Pawn(Color::White));
+        board.setPieceAt({1,i}, new Pawn(Color::Black));
+    }
+
+    board.setPieceAt({7,0}, new Rook(Color::White));
+    board.setPieceAt({7,7}, new Rook(Color::White));
+    board.setPieceAt({0,0}, new Rook(Color::Black));
+    board.setPieceAt({0,7}, new Rook(Color::Black));
+
+    board.setPieceAt({7,1}, new Knight(Color::White));
+    board.setPieceAt({7,6}, new Knight(Color::White));
+    board.setPieceAt({0,1}, new Knight(Color::Black));
+    board.setPieceAt({0,6}, new Knight(Color::Black));
+
+    board.setPieceAt({7,2}, new Bishop(Color::White));
+    board.setPieceAt({7,5}, new Bishop(Color::White));
+    board.setPieceAt({0,2}, new Bishop(Color::Black));
+    board.setPieceAt({0,5}, new Bishop(Color::Black));
+
+    board.setPieceAt({7,4}, new King(Color::White));
+    board.setPieceAt({0,4}, new King(Color::Black));
+
+    board.setPieceAt({7,3}, new Queen(Color::White));
+    board.setPieceAt({0,3}, new Queen(Color::Black));
+
+
+
 }
 
 void Game::handleInput()
@@ -41,24 +69,49 @@ void Game::handleInput()
 
     if (!selectedPosition)
     {
-        if (board.getPieceAt(clicked) != nullptr)
+        Piece* p = board.getPieceAt(clicked);
+        if (p && p->getColor() == currentTurn)
         {
             selectedPosition = clicked;
-            std::cout << " -- 46 -- " << std::endl; //debug print
+            std::cout << "[SELECT] "
+                      << colorToStr(p->getColor())
+                      << " at (" << clicked.row << "," << clicked.col << ")\n";
         }
     }
+
     else
     {
-        if (clicked == *selectedPosition)
+        Position from = *selectedPosition;
+
+        if (clicked == from)
         {
-            std::cout << "Tried to move to the same square" << std::endl;
+            std::cout << "[CANCEL] clicked same square\n";
             selectedPosition.reset();
         }
         else
         {
-            movePiece(*selectedPosition, clicked);
+            std::cout << "[TRY MOVE] from ("
+                      << from.row << "," << from.col
+                      << ") to ("
+                      << clicked.row << "," << clicked.col << ")\n";
+
+
+            if (isValidMove(from, clicked))
+            {
+                std::cout << "[MOVE OK]\n";
+                movePiece(from, clicked);
+
+                currentTurn = (currentTurn == Color::White) ? Color::Black : Color::White;
+                std::cout << "[TURN] "
+                          << (currentTurn == Color::White ? "WHITE" : "BLACK")
+                          << "\n";
+            }
+            else
+            {
+                std::cout << "[MOVE INVALID]\n";
+            }
+
             selectedPosition.reset();
-            std::cout << " -- 53 -- " << std::endl; //debug print
         }
     }
 
@@ -72,11 +125,13 @@ void Game::movePiece(const Position &from, const Position &to)
         return;
 
     Piece* target = board.getPieceAt(to);
-    if (target && target->getColor() == piece->getColor())
-        return;
+    if (target)
+        delete target;
 
     board.setPieceAt(to, piece);
     board.setPieceAt(from, nullptr);
+
+    piece->setHasMoved(true);
 }
 
 bool Game::isValidMove(const Position &from, const Position &to) const
@@ -93,38 +148,21 @@ bool Game::isValidMove(const Position &from, const Position &to) const
             return false;
         }
 
-    // from != to
     if (from == to)
         return false;
 
-    // from piece exists
-    if (piece == nullptr)
+    if (!piece)
         return false;
 
-    // same color capture
     if (target && target->getColor() == piece->getColor())
         return false;
 
-    // whos turn is it
-    if (piece->getColor() != currentTurn)
+    // piece rules
+    auto moves = piece->getPossibleMoves(board, from);
+    if (std::find(moves.begin(), moves.end(), to) == moves.end())
         return false;
 
-    // castling
-
-    if (piece->getType() == PieceType::King &&
-        std::abs(from.col - to.col) == 2)
-    {
-        return canCastle(from, to);
-    }
-
-    // check possible moves for piece
-    auto pieceMoves = piece->getPossibleMoves(board, from);
-    if (std::find(pieceMoves.begin(), pieceMoves.end(), to) == pieceMoves.end())
-        return false;
-
-
-    // king in check?
-
+    // leavesKingInCheck / castle / en passant
 
     return true;
 }
@@ -133,7 +171,7 @@ bool Game::canCastle(const Position &from, const Position &to) const
 {
     Piece* king = board.getPieceAt(from);
 
-    if (!king || king->getType() != PieceType::King)
+    if (!king || dynamic_cast<King*>(king) == nullptr)
         return false;
 
     if (king->getHasMoved())
@@ -144,14 +182,14 @@ bool Game::canCastle(const Position &from, const Position &to) const
     int rookCol = kingSide ? 7 : 0; // ternary to decide what rook
 
     Piece* rook = board.getPieceAt({from.row, rookCol});
-    if (!rook || rook->getType() != PieceType::Rook || rook->getHasMoved())
+    if (!rook || dynamic_cast<Rook*>(rook) || rook->getHasMoved())
         return false;
 
 
     return true;
 }
 
-bool Game::leavesKingInCheck(const Position &from, const Position &to) const
+bool Game::leavesKingInCheck(const Position &from, const Position &to)
 {
 
     Piece* captured = board.getPieceAt(to);
@@ -167,7 +205,7 @@ Position Game::locateKing(Color color) const
         for (int col = 0; col < 8; col ++)
         {
             Piece* p = board.getPieceAt({row, col});
-            if (p && p->getColor() == color && p->getType() == PieceType::King)
+            if (p && p->getColor() == color && dynamic_cast<King*>(p) != nullptr)
             {
                 Position kingPos = {row, col};
                 return kingPos;
@@ -200,4 +238,9 @@ bool Game::isKingInCheck(Color color) const
         }
 
     return false;
+}
+
+const char* Game::colorToStr(Color c)
+{
+    return (c == Color::White) ? "WHITE" : "BLACK";
 }
