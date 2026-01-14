@@ -1,6 +1,26 @@
 #include "Game.h"
 #include <iostream>
 #include <algorithm>
+#include <fstream>
+#include <string>
+
+static std::string posToAlg(const Position &p)
+{
+    char file = 'a' + p.col;
+    char rank = '8' - p.row;
+    return std::string{file, rank};
+}
+
+static void recordMove(const std::string &path, const Position &from, const Position &to, bool capture)
+{
+    std::ofstream file(path, std::ios::app);
+    if (!file)
+        return;
+    if (capture)
+        file << posToAlg(from) << " x " << posToAlg(to) << '\n';
+    else
+        file << posToAlg(from) << " " << posToAlg(to) << '\n';
+}
 
 Game::Game()
     : renderer(800, 800, "Chess"), input(renderer.getWindow(), renderer.getTileSize())
@@ -29,6 +49,10 @@ void Game::run()
 
 void Game::setupBoard()
 {
+    // Clear moves file when starting a new game
+    std::ofstream file("moves.txt", std::ios::trunc);
+    (void)file;
+
     for (int i = 0; i < 8; i++)
     {
         board.setPieceAt({6,i}, new Pawn(Color::White));
@@ -125,16 +149,45 @@ void Game::movePiece(const Position &from, const Position &to)
         return;
 
     Piece* target = board.getPieceAt(to);
+    bool wasCapture = (target != nullptr);
     if (target)
         delete target;
+
+    // castling logic
+    if (dynamic_cast<King*>(piece) != nullptr && from.row == to.row && std::abs(to.col - from.col) == 2)
+    {
+        int dc = to.col - from.col;
+        int rookCol = (dc > 0) ? 7 : 0;
+        int rookDestCol = from.col + (dc > 0 ? 1 : -1);
+
+        Piece* rook = board.getPieceAt({from.row, rookCol});
+
+        board.setPieceAt(to, piece);
+        board.setPieceAt(from, nullptr);
+
+        if (rook)
+        {
+            board.setPieceAt({from.row, rookDestCol}, rook);
+            board.setPieceAt({from.row, rookCol}, nullptr);
+            rook->setHasMoved(true);
+        }
+
+        piece->setHasMoved(true);
+
+        recordMove("moves.txt", from, to, wasCapture);
+
+        return;
+    }
 
     board.setPieceAt(to, piece);
     board.setPieceAt(from, nullptr);
 
     piece->setHasMoved(true);
+
+    recordMove("moves.txt", from, to, wasCapture);
 }
 
-bool Game::isValidMove(const Position &from, const Position &to) const
+bool Game::isValidMove(const Position &from, const Position &to)
 {
     Piece* piece = board.getPieceAt(from);
     Piece* target = board.getPieceAt(to);
@@ -160,31 +213,51 @@ bool Game::isValidMove(const Position &from, const Position &to) const
     // piece rules
     auto moves = piece->getPossibleMoves(board, from);
     if (std::find(moves.begin(), moves.end(), to) == moves.end())
-        return false;
+    {
+        bool isKing = dynamic_cast<King*>(piece) != nullptr;
+        bool isTwoColMove = std::abs(to.col - from.col) == 2;
 
-    // leavesKingInCheck / castle / en passant
+        if (!(isKing && isTwoColMove && canCastle(from, to)))
+            return false;
+    }
+
+    // leavesKingInCheck
+    if (leavesKingInCheck(from, to))
+        return false;
 
     return true;
 }
 
-bool Game::canCastle(const Position &from, const Position &to) const
+bool Game::canCastle(const Position &from, const Position &to)
 {
     Piece* king = board.getPieceAt(from);
-
-    if (!king || dynamic_cast<King*>(king) == nullptr)
+    if (!king || dynamic_cast<King*>(king) == nullptr || king->getHasMoved())
         return false;
 
-    if (king->getHasMoved())
+    // must move exactly two squares
+    int dc = to.col - from.col;
+    if (dc != 2 && dc != -2)
         return false;
 
-    int colDiff = to.col - from.col; // should be either 2 or -2 depending on king or queenside
-    bool kingSide = colDiff > 0; // more then 0 would be kingside/short/O-O
-    int rookCol = kingSide ? 7 : 0; // ternary to decide what rook
 
+    int rookCol = (dc > 0) ? 7 : 0;
     Piece* rook = board.getPieceAt({from.row, rookCol});
-    if (!rook || dynamic_cast<Rook*>(rook) || rook->getHasMoved())
+    if (!rook || dynamic_cast<Rook*>(rook) == nullptr || rook->getColor() != king->getColor() || rook->getHasMoved())
         return false;
 
+    // clear path?
+    int step = (rookCol > from.col) ? 1 : -1;
+    for (int c = from.col + step; c != rookCol; c += step)
+        if (board.getPieceAt({from.row, c}) != nullptr)
+            return false;
+
+    if (isKingInCheck(king->getColor()))
+        return false;
+
+
+    Position mid{from.row, from.col + (dc / 2)}; // +1 or -1
+    if (leavesKingInCheck(from, mid) || leavesKingInCheck(from, to))
+        return false;
 
     return true;
 }
@@ -192,11 +265,19 @@ bool Game::canCastle(const Position &from, const Position &to) const
 bool Game::leavesKingInCheck(const Position &from, const Position &to)
 {
 
-    Piece* captured = board.getPieceAt(to);
-    Piece* moving = board.getPieceAt(from);
+    Piece* targetSquare = board.getPieceAt(to);
+    Piece* piece = board.getPieceAt(from);
 
+    if (!targetSquare && !piece)
+        return false;
 
-    return false;
+    board.setPieceAt(to, piece);
+    board.setPieceAt(from, nullptr);
+    bool inCheck = isKingInCheck(piece->getColor());
+    board.setPieceAt(from, piece);
+    board.setPieceAt(to, targetSquare);
+
+    return inCheck;
 }
 
 Position Game::locateKing(Color color) const
