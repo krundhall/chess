@@ -28,8 +28,3 @@ sf::Texture &Piece::accessTexture()
 {
     return texture;
 }
-
-const sf::Texture &Piece::getTexture() const
-{
-    return texture;
-}

@@ -20,7 +20,7 @@ void InputHandler::handleEvent(const sf::Event &event)
     int col = x / tileSize;
     int row = y / tileSize;
 
-    if (row < 0 || row >= 8 || col < 0 || col >= 8) // out of bounds check
+    if (row < 0 || row >= 8 || col < 0 || col >= 8)
         return;
 
 

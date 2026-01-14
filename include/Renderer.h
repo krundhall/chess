@@ -24,5 +24,4 @@ public:
 
 	sf::RenderWindow& getWindow();
     int getTileSize() const;
-    void loadTextures();
 };

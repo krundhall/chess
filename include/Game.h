@@ -21,6 +21,7 @@ private:
 
     Color currentTurn = Color::White;
     std::optional<Position> selectedPosition;
+    bool gameOver = false;
 public:
     Game();
     void run();
@@ -32,9 +33,9 @@ private:
     bool isValidMove(const Position &from, const Position &to);
     bool canCastle(const Position &from, const Position &to);
     bool leavesKingInCheck(const Position &from, const Position &to);
+    bool isCheckmate(Color color);
     Position locateKing(Color color) const;
     bool isKingInCheck(Color color) const;
     static const char* colorToStr(Color c);
-    bool isSquareAttacked(const Position &square, Color color) const;
 
 };

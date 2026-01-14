@@ -9,7 +9,6 @@ Renderer::Renderer(unsigned int width, unsigned int height, const char* title)
 	: window(sf::VideoMode(width, height), title), tileSize(100)
 {
 	window.setFramerateLimit(100);
-    loadTextures();
 }
 
 bool Renderer::isOpen() const
@@ -67,7 +66,7 @@ void Renderer::drawPieces(const Board& board)
 			if (piece == nullptr)
 				continue;
 
-            sprite.setTexture(piece->getTexture());
+            sprite.setTexture(piece->accessTexture());
 
             // scale the texture accordingly to tileSize
             auto texSize = sprite.getTexture()->getSize();
@@ -92,17 +91,4 @@ sf::RenderWindow& Renderer::getWindow()
 int Renderer::getTileSize() const
 {
     return this->tileSize;
-}
-
-void Renderer::loadTextures()
-{
-    std::cout << "CWD: "
-              << std::filesystem::current_path()
-              << std::endl;
-
-    //if (!textures[{PieceType::Pawn, Color::White}].loadFromFile("../assets/white_pawn.png"))
-    //    std::cout << "Failed to load white pawn\n";
-
-    //if (!textures[{PieceType::Pawn, Color::Black}].loadFromFile("../assets/black_pawn.png"))
-    //    std::cout << "Failed to load black pawn\n";
 }

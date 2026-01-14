@@ -49,7 +49,7 @@ void Game::run()
 
 void Game::setupBoard()
 {
-    // Clear moves file when starting a new game
+    // trunc, cleans file when new game
     std::ofstream file("moves.txt", std::ios::trunc);
     (void)file;
 
@@ -86,6 +86,9 @@ void Game::setupBoard()
 
 void Game::handleInput()
 {
+    if (gameOver)
+        return;
+
     if (!input.hasClicked())
         return;
 
@@ -126,9 +129,13 @@ void Game::handleInput()
                 movePiece(from, clicked);
 
                 currentTurn = (currentTurn == Color::White) ? Color::Black : Color::White;
-                std::cout << "[TURN] "
-                          << (currentTurn == Color::White ? "WHITE" : "BLACK")
-                          << "\n";
+                std::cout << "[TURN] " << (currentTurn == Color::White ? "WHITE" : "BLACK") << "\n";
+
+                if (isCheckmate(currentTurn))
+                {
+                    std::cout << "[GAME OVER] Checkmate! " << (currentTurn == Color::White ? "WHITE" : "BLACK") << " is checkmated.\n";
+                    gameOver = true;
+                }
             }
             else
             {
@@ -324,4 +331,29 @@ bool Game::isKingInCheck(Color color) const
 const char* Game::colorToStr(Color c)
 {
     return (c == Color::White) ? "WHITE" : "BLACK";
+}
+
+bool Game::isCheckmate(Color color)
+{
+    if (!isKingInCheck(color))
+        return false;
+
+    for (int r = 0; r < 8; ++r)
+    {
+        for (int c = 0; c < 8; ++c)
+        {
+            Position from{r, c};
+            Piece* p = board.getPieceAt(from);
+            if (!p || p->getColor() != color)
+                continue;
+
+            auto moves = p->getPossibleMoves(board, from);
+            for (const Position &to : moves)
+            {
+                if (isValidMove(from, to))
+                    return false; // found a legal move
+            }
+        }
+    }
+    return true;
 }

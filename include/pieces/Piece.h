@@ -24,5 +24,4 @@ public:
     void setHasMoved(bool state);
 
     sf::Texture& accessTexture();
-    const sf::Texture& getTexture() const;
 };
