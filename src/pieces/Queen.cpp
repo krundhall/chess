@@ -9,11 +9,13 @@ Queen::Queen(Color color)
     {
         if (!texture.loadFromFile("../assets/white_queen.png"))
             throw std::runtime_error("Failed to load asset: white_queen.png");
+        texture.setSmooth(true);
     }
     else
     {
         if (!texture.loadFromFile("../assets/black_queen.png"))
             throw std::runtime_error("Failed to load asset: black_queen.png");
+        texture.setSmooth(true);
     }
 }
 

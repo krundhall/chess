@@ -9,11 +9,13 @@ Pawn::Pawn(Color color)
     {
         if (!texture.loadFromFile("../assets/white_pawn.png"))
             throw std::runtime_error("Failed to load asset: white_pawn.png");
+        texture.setSmooth(true);
     }
     else
     {
         if (!texture.loadFromFile("../assets/black_pawn.png"))
             throw std::runtime_error("Failed to load asset: black_pawn.png");
+        texture.setSmooth(true);
     }
 }
 

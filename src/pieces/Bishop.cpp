@@ -9,11 +9,13 @@ Bishop::Bishop(Color color)
     {
         if (!texture.loadFromFile("../assets/white_bishop.png"))
             throw std::runtime_error("Failed to load asset: white_bishop.png");
+        texture.setSmooth(true);
     }
     else
     {
         if (!texture.loadFromFile("../assets/black_bishop.png"))
             throw std::runtime_error("Failed to load asset: black_bishop.png");
+        texture.setSmooth(true);
     }
 }
 

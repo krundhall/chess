@@ -9,11 +9,13 @@ Rook::Rook(Color color)
     {
         if (!texture.loadFromFile("../assets/white_rook.png"))
             throw std::runtime_error("Failed to load asset: white_rook.png");
+        texture.setSmooth(true);
     }
     else
     {
         if (!texture.loadFromFile("../assets/black_rook.png"))
             throw std::runtime_error("Failed to load asset: black_rook.png");
+        texture.setSmooth(true);
     }
 }
 
@@ -80,9 +82,9 @@ std::vector<Position> Rook::getPossibleMoves(const Board &board, const Position 
 
     // "Right"
 
-    for (int c = from.col + 1; c < 8; --c)
+    for (int c = from.col + 1; c < 8; ++c)
     {
-        Position to{from.col, c};
+        Position to{from.row, c};
         Piece* target = board.getPieceAt(to);
 
         if (target == nullptr)

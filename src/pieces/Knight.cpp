@@ -9,11 +9,13 @@ Knight::Knight(Color color)
     {
         if (!texture.loadFromFile("../assets/white_knight.png"))
             throw std::runtime_error("Failed to load asset: white_knight.png");
+        texture.setSmooth(true);
     }
     else
     {
         if (!texture.loadFromFile("../assets/black_knight.png"))
             throw std::runtime_error("Failed to load asset: black_knight.png");
+        texture.setSmooth(true);
     }
 }
 
