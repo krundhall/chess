@@ -1,0 +1,54 @@
+Min plan är att göra ett schackspel med ett SFML gränssnitt. Tanken är att man lokalt skall kunna spela ett parti schack lokalt på en dator från start till slut. Användarens drag kommer även skrivas till en "moves.txt" fil.
+
+Tanken är i framtiden att expandera projektet när jag har utvecklats mer som programmerare. Jag hade velat testa mig på att implementera online multiplayer. Men det är lite utanför denna kursens scope. Att även kunna implementera någon form av schackdatabas-hjälp för att kunna lista ut användares bästa möjliga drag hade varit coolt, men får se vart nivån ligger.
+
+## För grundkrav:
+
+# 5 egen definerade klasser:
+I detta projekt finns det fler än 5 eget definerade klasser.
+Pieces, Pawn, King, Queen, Knight, Bishop, Rook, Game, InputHandler, Renderer
+
+Utöver dem klasserna har jag även två eget definerade typer, nämligen Position och Color som har underlättat i utvecklandet.
+
+
+# Objekt skall finnas och hanteras i en behållare
+Pjäsernas drag blir lagrade i en vector av typen Position. Logiken för detta hittas i valfri pjäs .cpp fil i metoden "getPossibleMoves".
+
+Vektorn blir hanterad av bl.a "isValidMove()" metoden i Game.cpp för att validera det drag användaren har gjort med den lista som en referens av vad pjäsen ens är möjlig till att göra.
+
+
+# Egendefinerat, logisk och rimligt arv med abstrakt klass
+Detta sker med pjäserna, där Piece är min abstrakta basklass som definerar alla gemensamma attributer för pjäserna. I Piece så hittar man te.x "hasMoved" stadiet, eller tilldelning av Color.
+
+
+# Överskuggning och dynamisk bindning
+I risk som att låta som en trasig klocka så säger jag att getPossibleMoves är åter ett exempel av detta.
+
+Game.cpp ln217 så kan man se hur jag använder dynamisk binding för att hämta rätt vector för rätt pjäs när ett drag skall valideras.
+
+# Dynamisk Minneshantering
+Detta projekt använder sig inte jättemycket av dynamisk minneshantering, men det används blandannat i "setupBoard()" metoden i Game, när brädet skall sättas upp med pjäser.
+
+I Boards destruktor så ser vi även användning av delete så att alla skapade pjäser hanteras korrekt.
+
+I Game, "movePiece()" ln157 ser vi även användning av delete för att korrekt ta bort minnet som var allokerat för en pjäs som har blivit tagen.
+
+
+# Datastruktur från standardbiblotek
+Som tidigare nämnt så används vector flitigt i samband med att lagra pjäsdrag.
+
+
+# Läsning från och/eller skrivning till textfiler
+I Game finns en statisk metod (recordMove) som kommer notera ner användarens drag till en textfil vid namn "moves". Detta kan användas för att "gå tillbaka" och återspela ett parti, eller för att studera vart det gick fel när du skulle försöka göra en scholars mate.
+
+
+## Tillägskrav:
+
+# Användande av undantagshantering
+I varje pjäs konstruktor, när jag laddar texturerna, så skulle assetten av någon anledning ladda in fel så kastas en runetime error, te.x:
+"Failed to load asset: white_bishop.png"
+
+Jag valde att sätta min try catch i main, även fast det smutsar ner den rena stilen. Jag övervägde först att sätta den i Game::setupBoard(), men bestämde mig att inte göra det då det kan i framtiden tillkomma att jag vill skapa nya pjäser mitt i ett spel (Pawn Promotion). På detta sätt fångar jag alltid denna error när den kastas upp av konstruktorn. Det finns troligtvis ett smidigare sätt att hantera detta, men det kommer vid nästa iteration av projektet.
+
+# Grafiskt användargränssnitt
+I detta projekt valde jag att använda SFML bibloteket för att skapa mitt grafiska användarsnitt. Bibloteket i min erfaren har varit väldigt smidigt, även fast jag tyckte att det kunde saknas lite förklaringar för vissa klasser/metoder som var nybörjarvänliga. Jag har lärt mig väldigt mycket på denna lilla tid, och kommer definitivt att använda SFML igen.

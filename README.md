@@ -25,7 +25,7 @@ Required on all platforms:
 
 Clone the repository
 ```
-git clone https://github.com/krundhall/chess.git
+git clone https://github.com/krundhall/chess
 ```
 
 Enter the project root
@@ -46,8 +46,6 @@ cmake --build build
 The executable will be located in the build directory, typically under
 build\Debug\chess.exe
 (or Release, depending on configuration)
-
-Make sure the required SFML DLL files are available at runtime (either in PATH or next to the executable).
 
 # Linux (Debian / Ubuntu)
 
@@ -93,6 +91,7 @@ Run the executable
 
 ## Notes
 
-This project uses an out-of-source build (the build directory can be safely deleted at any time).
+This project is ran from the build folder.
+
 If SFML is not found, CMake will fail during configuration.
 The project has been tested and developed primarily on Linux (through WSL 2.0).

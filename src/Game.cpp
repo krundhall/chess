@@ -58,7 +58,6 @@ void Game::setupBoard()
         board.setPieceAt({6,i}, new Pawn(Color::White));
         board.setPieceAt({1,i}, new Pawn(Color::Black));
     }
-
     board.setPieceAt({7,0}, new Rook(Color::White));
     board.setPieceAt({7,7}, new Rook(Color::White));
     board.setPieceAt({0,0}, new Rook(Color::Black));
@@ -79,9 +78,6 @@ void Game::setupBoard()
 
     board.setPieceAt({7,3}, new Queen(Color::White));
     board.setPieceAt({0,3}, new Queen(Color::Black));
-
-
-
 }
 
 void Game::handleInput()
