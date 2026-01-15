@@ -7,3 +7,6 @@ build/
 
 # Editor junk
 .vscode/
+
+# macos junk
+.DS_Store
