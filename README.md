@@ -17,7 +17,7 @@ Required on all platforms:
 ## Requirements
 
 - Windows 10 or newer
-- A C++ compiler (clang, gnu, mcsv)
+- A C++20 compatible compiler
 - CMake available in PATH
 - SFML installed (via vcpkg or official SFML binaries)
 
