@@ -17,7 +17,7 @@ Required on all platforms:
 ## Requirements
 
 - Windows 10 or newer
-- Visual Studio 2019 or later (with the “Desktop development with C++” workload installed)
+- A C++ compiler (clang, gnu, mcsv)
 - CMake available in PATH
 - SFML installed (via vcpkg or official SFML binaries)
 
